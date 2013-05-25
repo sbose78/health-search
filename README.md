@@ -77,8 +77,9 @@ Use of Django meant easy harnessing of its out-of-the-box REST-style URL mapping
 URL
 ----
 
-http://journal.sbose.in
+http://health-nodejstest.rhcloud.com/
 
+( Relax, it's got nothing to do with Node.js )
 
 Technologies used for building
 -------------------------------
