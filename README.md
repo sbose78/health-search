@@ -108,3 +108,7 @@ Testing
 --------
 
 I used the Firefox REST client add-on.
+
+Screenshots : 
+- Adding a case report to index :   http://health-nodejstest.rhcloud.com/add-report.png
+- Similarity prediction :   http://health-nodejstest.rhcloud.com/similarity.png
