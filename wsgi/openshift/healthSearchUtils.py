@@ -2,6 +2,8 @@ from xml.dom import minidom
 import pickle
 import time
 from pymongo.connection import Connection
+import pymongo
+from pymongo import MongoClient
 from bson.objectid import ObjectId
 import re
 import credentials
@@ -62,7 +64,7 @@ def generate_case_report_file():
 		 #print read_health_issue,"************************"
 
 
-
+'''
 def getConnection():
 	global connection
 	if connection != None and connection.alive() == False :
@@ -72,6 +74,12 @@ def getConnection():
 	else:
 		pass
 	return connection['BOSE']
+'''
+def getConnection():
+	global connection	
+	connection = MongoClient(MY_DB_CONNECTION_STRING)
+	db = connection.BOSE
+	return db
 
 def insert_into_db(health_issue_json):	
 	db=getConnection()
