@@ -12,7 +12,12 @@ collection_indices = "indices"
 collection_case_reports = "case_reports"
 MY_DB_CONNECTION_STRING = credentials.DB_CONNECTION_STRING
 #test
-connection = None # Connection('mongodb://sbose78:ECDW=19YRS@staff.mongohq.com:10068/BOSE')
+connection = None 
+
+'''
+This function reads data from the XML file containing case reports
+and inserts them in the specific format into the MongoDB database
+'''
 def generate_case_report_file():	
 	xmldoc = minidom.parse('downloaded.xml')
 	#print str(xmldoc)
@@ -50,11 +55,16 @@ def generate_case_report_file():
 		 "title" : title , "date" : date , "description" :description , 
 		 "url" : url
 		 }
-		 #file_name = "case_reports_bmj/"+title+str(time.time())+".htxt"
-		 #pickle.dump(health_issue_json , open(file_name,"wb"))
 
 		 insert_into_db(health_issue_json)
 
+		# The commented out code below serialized each case report and wrote
+		# to the file		 
+
+		 #file_name = "case_reports_bmj/"+title+str(time.time())+".htxt"
+		 #pickle.dump(health_issue_json , open(file_name,"wb"))
+
+		 
 		 # testing if the file has been written by 
 		 # reading it back and printing to console.
 		 #read_health_issue = pickle.load(open(file_name,"rb"))
@@ -64,7 +74,7 @@ def generate_case_report_file():
 		 #print read_health_issue,"************************"
 
 
-'''
+'''  
 def getConnection():
 	global connection
 	if connection != None and connection.alive() == False :
@@ -87,7 +97,9 @@ Call this function to add a new report to the repository
 The json should be in this format.
 
 	 health_issue_json = { 
-		 "title" : title , "date" : date , "description" :description , 
+		 "title" : title , 
+		 "date" : date , 
+		 "description" :description , 
 		 "url" : url
 		 }
 '''
@@ -111,7 +123,7 @@ def get_case_report_by_id(case_report_id):
 		return report
 	return None
 
-
+# Get all case reports from the collection and update the indices
 def retreive_all_case_reports():
 	db=getConnection()
 	collection = db[collection_case_reports]
@@ -178,8 +190,8 @@ def add_new_word(word):
 	collection.insert({"name":word.upper(),	"index": my_index})
 #add_new_word('leg')
 
-# This function adds all the health issues 
-# into the mongodb.
+# This function adds all the to-be-indexed keywords
+# into the mongodb database.
 def create_index():
 	unique_set = set()
 	count = 0
@@ -224,6 +236,8 @@ def is_medical_term(line_from_text):
 			pass
 	return filtered_tokens
 
+# This is where all the action happens
+# This function generates similar cases  and ranks them by relevance
 def rank_case_reports(search_key):
 	indices_map_by_health_term = get_indices_of_health_terms_from_search_key(search_key)
 	case_vs_count_map={}
@@ -282,7 +296,7 @@ def get_indices_of_health_terms_from_search_key(search_key):
 	return map_of_health_term_to_index
 
 # this function fetches the case reports 
-# which contains the specific health term
+# which contains the specific health term/keyword
 
 def get_indices_by_health_term(medical_term):
 	db=getConnection()

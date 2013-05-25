@@ -17,9 +17,9 @@ def get_search_results(request):
 	report = request.POST["report"]
 	print report
 	search_results = healthSearchUtils.get_search_results(report)
-	#search_results = healthSearchUtils.makeJSONSerializable(search_results)
-	
+	#search_results = healthSearchUtils.makeJSONSerializable(search_results)	
 	return HttpResponse(json.dumps(search_results, sort_keys=True, indent=4, default=json_util.default),mimetype="application/json")
+	
 def add_new_report(request):
 	title = request.POST["title"]
 	url = request.POST["url"]

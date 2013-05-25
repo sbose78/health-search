@@ -9,10 +9,11 @@ import credentials
 collection_indices = "indices"
 collection_case_reports = "case_reports"
 MY_DB_CONNECTION_STRING = credentials.DB_CONNECTION_STRING
+MY_DB_NAME = credentials.DB_NAME
 #test
-connection = None # Connection('mongodb://sbose78:ECDW=19YRS@staff.mongohq.com:10068/BOSE')
-def generate_case_report_file():	
-	xmldoc = minidom.parse('downloaded.xml')
+connection = None 
+def generate_case_report_repository():	
+	xmldoc = minidom.parse('sample-case-reports.xml')
 	#print str(xmldoc)
 	itemlist = xmldoc.getElementsByTagName('oai_dc:dc')
 	print len( itemlist)
@@ -81,11 +82,11 @@ def getConnection():
 		connection = Connection(MY_DB_CONNECTION_STRING)
 	else:
 		pass
-	return connection['BOSE']
+	return connection[MY_DB_NAME]
 
 def insert_into_db(health_issue_json):	
 	getConnection()	
-	db=connection['BOSE']
+	db=connection[MY_DB_NAME]
 	collection = db['case_reports']
 	collection.insert(health_issue_json)
 
