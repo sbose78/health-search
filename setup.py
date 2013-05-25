@@ -9,5 +9,5 @@ setup(
     author='Shoubhik Bose',
     author_email='sbose78@gmail.com',
     url='http://www.python.org/sigs/distutils-sig/',
-    install_requires=['Django>=1.3','pymongo'],
+    install_requires=['Django>=1.3','pymongo<=2.4'],
 )
