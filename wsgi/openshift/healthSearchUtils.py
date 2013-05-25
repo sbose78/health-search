@@ -81,10 +81,21 @@ def getConnection():
 	db = connection.BOSE
 	return db
 
+
+'''
+Call this function to add a new report to the repository
+The json should be in this format.
+
+	 health_issue_json = { 
+		 "title" : title , "date" : date , "description" :description , 
+		 "url" : url
+		 }
+'''
 def insert_into_db(health_issue_json):	
 	db=getConnection()
 	collection = db[collection_case_reports]
-	collection.insert(health_issue_json)
+	object_id=collection.insert(health_issue_json)
+	return object_id
 
 # case reports queried by arbitrary condition 
 def get_case_report_by_condition(condition):

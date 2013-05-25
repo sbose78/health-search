@@ -99,4 +99,4 @@ Installation
 - Clone the repository
 - The Openshift-deployable app can be found at web/health-search/...
   Add a file named "credentials.properties" under wsgi/openshift/
-- Do a "python manage.py runserver " at wsgi/openshift in the commandline
+- Do a "python manage.py runserver " at wsgi/openshift in the commandline.

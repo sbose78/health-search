@@ -7,7 +7,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'openshift.views.home', name='home'),
-    url(r'^similarity/(?P<report>.*)$','openshift.views.get_search_results', name='get_search_results'),
+    url(r'^similarity','openshift.views.get_search_results', name='get_search_results'),
+    url(r'^report/add','openshift.views.add_new_report', name='add_new_report'),
     # url(r'^openshift/', include('openshift.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
