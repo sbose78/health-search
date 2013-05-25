@@ -1,2 +1,3 @@
 *.pyc
+*/openshift/credentials.properties
 
