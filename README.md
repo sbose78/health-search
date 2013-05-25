@@ -21,7 +21,7 @@ HOW - The interface
 
 Add a new health case report to the search index:
 
-	POST http://<server-host>/index
+	POST http://<server-host>/report/add
 
 	Request Parameters :
 	- URL 
@@ -102,3 +102,9 @@ Installation
   under /health-search-scripts/
 - Run the "install.py" installation script ( "python install.py" in commandline ) from /health-search-scripts/
 - Do a "python manage.py runserver " at wsgi/openshift in the commandline.
+
+
+Testing
+--------
+
+I used the Firefox REST client add-on.
