@@ -74,10 +74,11 @@ I used Django on Openshift to write my application in Python.
 Use of Django meant easy harnessing of its out-of-the-box REST-style URL mapping.
 
 
-URL
+Public endpoints 
 ----
 
-http://health-nodejstest.rhcloud.com/
+- http://health-nodejstest.rhcloud.com/report/add
+- http://health-nodejstest.rhcloud.com/similarity
 
 ( Relax, it's got nothing to do with Node.js )
 
@@ -106,6 +107,9 @@ Installation
 
 Testing
 --------
+
+For testing the publicly deployed application ( http://health-nodejstest.rhcloud.com/ ) , 
+online tools like hurl.it could be used.
 
 I used the Firefox REST client add-on to test the locally deployed application.
 ( https://addons.mozilla.org/en-us/firefox/addon/restclient/ )
