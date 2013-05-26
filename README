@@ -1,17 +1,132 @@
-Twit-journal
-===================
-I'll be tweeting new things I learn with a leading WL:
-My simple app will parse that out and display it here : journal.sbose.in
-
-Not many people follow me in Twitter :( 
-and not many people follow Twitter ;)
-
-Hence, this app filters out the nonsense and displays only the sensible stuff on
-my 'journal'. 
+The health case reports' similarity prediction
+================================================
 
 
+WHAT this service aims to accomplish
+--------------------------------------------
 
-What I used
-------------
+This REST-styled webservice will be used for 
+- training the system 
+- Prediction of similiar health case reports.
 
-Python , Django , Openshift, a lot of JQuery , HTML and CSS :)
+
+WHY
+----
+
+For assisting care-givers by letting them take a look at previously discussed similar/related documented health issues.
+
+
+HOW - The interface
+---------------
+
+Add a new health case report to the search index:
+
+	POST http://<server-host>/report/add
+
+	Request Parameters :
+	- URL 
+	- Title
+	- Description
+
+	Response format :
+
+	content-type : application/json
+	body :
+	{
+		status : "OK"	
+	}
+
+
+
+Find out similar health cases ( or case reports or health issues) :
+
+	POST http://<server-host>/similarity
+
+	Request Parameters:
+	-Description 
+
+The objective of having a webservice is to make sure the system can be extended as in, 
+
+- A simple interface to allow adding of more case reports one-by-one or as a batch process.
+- An embeddable solution where any website or healthcare platform would be able to display similar case reports on their own website.
+
+Storage
+---------
+
+The case reports are stored in documents in a MongoDB database ( plumbing managed by Mongohq.org ).
+To make sure performance doesn't fall due to opening of new connections, the application checks
+if there's an alive connection , failure of which makes the application instantiate a new 
+database connection.
+
+Initially, I had decided to save case reports in serialized documents ( using Pickle ) but threw away what I built realising that it became too inconvenient to deploy the application executable without 
+moving the data around.
+
+The  MongoDB database uses 2 collections :
+
+- case_reports : In this collection, each document stores the URL , title and description of the case 				   report.
+- indices : In this collection, each document stores a unique medical term and its corresponding Set (			 list of unique members ) of document IDs of case reports which feature that medical term.
+
+
+Web framework 
+---------------
+
+I used Django on Openshift to write my application in Python.
+Use of Django meant easy harnessing of its out-of-the-box REST-style URL mapping.
+
+
+Public endpoints 
+----
+
+- http://health-nodejstest.rhcloud.com/report/add
+- http://health-nodejstest.rhcloud.com/similarity
+
+( Relax, it's got nothing to do with Node.js )
+
+Technologies used for writing
+-------------------------------
+
+- Server-side scripting : Python ,
+- Web framework :  Django ,
+- Application hosting:  Openshift Django
+- Database : MongoDB hosted on www.MongoHQ.org
+
+Developer tools:
+
+- Sublime Text
+
+Installation
+--------------
+
+- Clone the repository
+- The Openshift-deployable app can be found at /health-search-webapp/...
+- Add a file named "credentials.properties" under wsgi/openshift/ and another copy of the file
+  under /health-search-scripts/
+- Run the "install.py" installation script ( "python install.py" in commandline ) from /health-search-scripts/
+- Do a "python manage.py runserver " at wsgi/openshift in the commandline.
+
+
+Testing
+--------
+
+For testing the publicly deployed application ( http://health-nodejstest.rhcloud.com/ ) , 
+online tools like hurl.it could be used.
+
+I used the Firefox REST client add-on to test the locally deployed application.
+( https://addons.mozilla.org/en-us/firefox/addon/restclient/ )
+
+Screenshots : 
+
+- Adding a case report to index :   http://health-nodejstest.rhcloud.com/add-report.png
+- Similarity prediction :   http://health-nodejstest.rhcloud.com/similarity.png
+
+Steps to test the ( currenty 2 ) webservice endpoints :
+
+- Set HTTP Method to POST .
+- Create a customer header "Content-Type" to "x-www-form-urlencoded".
+- Add the parameters in the request body 
+
+( example, 
+
+		url=http://care.udhc.co.in/INPUT/displayIssueGraphically.jsp?topic_id=242&title=Fever due to Fungal Cellulitis following road traffic accident&description=The patient suffered a motorcycle injury 2 months prior to contacting the ArogyaUDHC social worker Mr Kar in Mathabhanga. The motorcycle handle penetrated his skin above the right knee. Initially, his local doctor sutured the area and gave antibiotics, but later the patient developed a high-grade intermittent fever with chills and a reddish patchy and nodular inflammatory lesion which he photographed and emailed to us.After his arrival at PCMS, Bhopal on 6th November, 2012 he underwent incision and drainage of an identified pus point. The pus culture was sterile for bacteria although it showed filamentous organisms on a wet mount (Figure 3). A fungal culture couldn't  be done due to logistic reasons.He continued to have low grade fever but went home on oral antifungals(tablet itraconazole 200mg twice a day for three months). His temperature charting (attached figure 4) sent to us after he went home showed continued low grade fever spikes but eventually subsided after a few days.He remained largely well till date (23rd March 2013) but for recent occasions when he experienced some discomfort in the same region (skin of right knee) with even some pus discharge from another new opening. He arrived back at PCMS, Bhopal on 21st March 2013. Has been planned for more extensive debridement on the 25th of March 2013.
+)
+
