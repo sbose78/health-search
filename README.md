@@ -53,7 +53,7 @@ The objective of having a webservice is to make sure the system can be extended 
 Storage
 ---------
 
-The case reports are stored in documents in a MongoDB database ( plumbing done by Mongohq.org ).
+The case reports are stored in documents in a MongoDB database ( plumbing managed by Mongohq.org ).
 To make sure performance doesn't fall due to opening of new connections, the application checks
 if there's an alive connection , failure of which makes the application instantiate a new 
 database connection.
@@ -81,7 +81,7 @@ http://health-nodejstest.rhcloud.com/
 
 ( Relax, it's got nothing to do with Node.js )
 
-Technologies used for building
+Technologies used for writing
 -------------------------------
 
 - Server-side scripting : Python ,
@@ -107,8 +107,22 @@ Installation
 Testing
 --------
 
-I used the Firefox REST client add-on.
+I used the Firefox REST client add-on to test the locally deployed application.
+( https://addons.mozilla.org/en-us/firefox/addon/restclient/ )
 
 Screenshots : 
+
 - Adding a case report to index :   http://health-nodejstest.rhcloud.com/add-report.png
 - Similarity prediction :   http://health-nodejstest.rhcloud.com/similarity.png
+
+Steps to test the ( currenty 2 ) webservice endpoints :
+
+- Set HTTP Method to POST .
+- Create a customer header "Content-Type" to "x-www-form-urlencoded".
+- Add the parameters in the request body 
+
+( example, 
+
+		url=http://care.udhc.co.in/INPUT/displayIssueGraphically.jsp?topic_id=242&title=Fever due to Fungal Cellulitis following road traffic accident&description=The patient suffered a motorcycle injury 2 months prior to contacting the ArogyaUDHC social worker Mr Kar in Mathabhanga. The motorcycle handle penetrated his skin above the right knee. Initially, his local doctor sutured the area and gave antibiotics, but later the patient developed a high-grade intermittent fever with chills and a reddish patchy and nodular inflammatory lesion which he photographed and emailed to us.After his arrival at PCMS, Bhopal on 6th November, 2012 he underwent incision and drainage of an identified pus point. The pus culture was sterile for bacteria although it showed filamentous organisms on a wet mount (Figure 3). A fungal culture couldn't  be done due to logistic reasons.He continued to have low grade fever but went home on oral antifungals(tablet itraconazole 200mg twice a day for three months). His temperature charting (attached figure 4) sent to us after he went home showed continued low grade fever spikes but eventually subsided after a few days.He remained largely well till date (23rd March 2013) but for recent occasions when he experienced some discomfort in the same region (skin of right knee) with even some pus discharge from another new opening. He arrived back at PCMS, Bhopal on 21st March 2013. Has been planned for more extensive debridement on the 25th of March 2013.
+)
+
